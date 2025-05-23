@@ -4,7 +4,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { useState } from "react";
 import { appRouter } from "./router";
 
-function App() {
+const App = () => {
     const [queryClient] = useState(() => new QueryClient());
 
     return (
@@ -13,6 +13,6 @@ function App() {
             <ReactQueryDevtools />
         </QueryClientProvider>
     );
-}
+};
 
 export default App;

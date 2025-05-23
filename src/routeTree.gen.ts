@@ -11,13 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as HelloImport } from './routes/hello'
 import { Route as IndexImport } from './routes/index'
+import { Route as ConfidentialSecretIdImport } from './routes/confidential/$secretId'
 
 // Create/Update Routes
+
+const HelloRoute = HelloImport.update({
+  id: '/hello',
+  path: '/hello',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ConfidentialSecretIdRoute = ConfidentialSecretIdImport.update({
+  id: '/confidential/$secretId',
+  path: '/confidential/$secretId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +46,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/hello': {
+      id: '/hello'
+      path: '/hello'
+      fullPath: '/hello'
+      preLoaderRoute: typeof HelloImport
+      parentRoute: typeof rootRoute
+    }
+    '/confidential/$secretId': {
+      id: '/confidential/$secretId'
+      path: '/confidential/$secretId'
+      fullPath: '/confidential/$secretId'
+      preLoaderRoute: typeof ConfidentialSecretIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +67,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/hello': typeof HelloRoute
+  '/confidential/$secretId': typeof ConfidentialSecretIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/hello': typeof HelloRoute
+  '/confidential/$secretId': typeof ConfidentialSecretIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/hello': typeof HelloRoute
+  '/confidential/$secretId': typeof ConfidentialSecretIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/hello' | '/confidential/$secretId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/hello' | '/confidential/$secretId'
+  id: '__root__' | '/' | '/hello' | '/confidential/$secretId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HelloRoute: typeof HelloRoute
+  ConfidentialSecretIdRoute: typeof ConfidentialSecretIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HelloRoute: HelloRoute,
+  ConfidentialSecretIdRoute: ConfidentialSecretIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +115,19 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/hello",
+        "/confidential/$secretId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/hello": {
+      "filePath": "hello.tsx"
+    },
+    "/confidential/$secretId": {
+      "filePath": "confidential/$secretId.tsx"
     }
   }
 }
