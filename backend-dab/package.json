@@ -3,6 +3,6 @@
     "version": "1.0.0",
     "description": "Azure Data API Builder backend",
     "scripts": {
-        "start": "./dab start"
+        "start": "dotnet dab.dll"
     }
 }
