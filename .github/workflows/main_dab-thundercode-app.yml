@@ -24,7 +24,7 @@ jobs:
         working-directory: backend-dab
         run: |
           curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o dab.zip
-          unzip dab.zip
+          unzip -o dab.zip
 
       - name: Zip artifact for deployment
         run: zip release.zip ./backend-dab/* -r
