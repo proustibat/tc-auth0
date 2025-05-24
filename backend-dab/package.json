@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Azure Data API Builder backend",
     "scripts": {
+        "postinstall": "npm install -g dab",
         "start": "dab start"
-    },
-    "license": "MIT"
+    }
 }
