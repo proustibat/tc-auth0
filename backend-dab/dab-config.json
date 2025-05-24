@@ -1,0 +1,44 @@
+{
+    "$schema": "https://github.com/Azure/data-api-builder/releases/download/v0.10.2/dab.draft.schema.json",
+    "data-source": {
+        "database-type": "mssql",
+        "connection-string": "@env('AZURE_SQL_CONNECTION_STRING')"
+    },
+    "runtime": {
+        "rest": { "enabled": false },
+        "graphql": { "enabled": true, "path": "/graphql" },
+        "host": {
+            "cors": {
+                "origins": ["http://localhost:5173", "https://thundercode.proustibat.dev"],
+                "allow-credentials": true
+            },
+            "authentication": {
+                "provider": "StaticWebApps",
+                "jwt": {
+                    "issuer": "https://dev-hmgwvp6nfcl21alj.us.auth0.com/",
+                    "audience": "https://thundercode.api"
+                }
+            }
+        }
+    },
+    "entities": {
+        "secrets": {
+            "source": "secrets",
+            "graphql": {
+                "enabled": true
+            },
+            "permissions": [
+                {
+                    "role": "authenticated",
+                    "actions": ["read"],
+                    "policy": {
+                        "action": "filter",
+                        "condition": {
+                            "organization_id": "=jwt.org_id"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
