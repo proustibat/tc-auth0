@@ -21,13 +21,13 @@ jobs:
           node-version: '22.x'
 
       - name: Download DAB (.NET build) into backend-dab
-        working-directory: backend-dab
         run: |
-          curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o dab.zip
-          unzip -o dab.zip
+          mkdir -p backend-dab/dab-bin
+          curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o backend-dab/dab.zip
+          unzip -o backend-dab/dab.zip -d backend-dab/dab-bin
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./backend-dab/* -r
+        run: zip -r release.zip backend-dab/dab-bin
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -67,4 +67,4 @@ jobs:
         with:
           app-name: 'dab-thundercode-dotnet'
           slot-name: 'Production'
-          package: backend-dab
+          package: backend-dab/dab-bin
