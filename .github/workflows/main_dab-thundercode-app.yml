@@ -69,4 +69,4 @@ jobs:
         with:
           app-name: 'dab-thundercode-dotnet'
           slot-name: 'Production'
-          package: backend-dab
+          package: release.zip
