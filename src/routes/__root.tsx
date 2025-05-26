@@ -2,6 +2,7 @@ import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { lazy } from "react";
 import { AuthProviderWithNavigate } from "../auth/AuthProvider.tsx";
 import Menu from "../components/Menu.tsx";
+import { ApolloWrapper } from "../graphql/ApolloWrapper.tsx";
 
 const TanStackRouterDevtools = import.meta.env.PROD
     ? () => null
@@ -14,9 +15,11 @@ const TanStackRouterDevtools = import.meta.env.PROD
 export const Route = createRootRoute({
     component: () => (
         <AuthProviderWithNavigate>
-            <Menu />
-            <Outlet />
-            <TanStackRouterDevtools />
+            <ApolloWrapper>
+                <Menu />
+                <Outlet />
+                <TanStackRouterDevtools />
+            </ApolloWrapper>
         </AuthProviderWithNavigate>
     ),
 });

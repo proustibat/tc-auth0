@@ -3,10 +3,10 @@ import { createRoot } from "react-dom/client";
 import App from "./app";
 
 async function renderRoot() {
-    if (import.meta.env.DEV) {
-        const { worker } = await import("../__mocks__/msw/browser");
-        await worker.start();
-    }
+    // if (import.meta.env.DEV) {
+    //     const { worker } = await import("../__mocks__/msw/browser");
+    //     await worker.start();
+    // }
 
     const RootComponent = (
         <StrictMode>
