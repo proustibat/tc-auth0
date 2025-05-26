@@ -32,14 +32,8 @@
             },
             "permissions": [
                 {
-                    "role": "authenticated",
-                    "actions": ["read"],
-                    "policy": {
-                        "action": "filter",
-                        "condition": {
-                            "organization_id": "=jwt.org_id"
-                        }
-                    }
+                    "role": "*",
+                    "actions": ["read"]
                 }
             ]
         }
