@@ -25,6 +25,9 @@ jobs:
         run: |
           curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o dab.zip
           unzip -o dab.zip
+          
+      - name: Make start.sh executable
+        run: chmod +x backend-dab/start.sh
 
       - name: Zip artifact for deployment
         run: zip -r release.zip ./backend-dab/*
