@@ -1,0 +1,39 @@
+{
+    "$schema": "https://github.com/Azure/data-api-builder/releases/download/v0.10.2/dab.draft.schema.json",
+    "data-source": {
+        "database-type": "mssql",
+        "connection-string": "Server=tcp:thundercode-sqlserver.database.windows.net,1433;Initial Catalog=thundercode-db;User ID=adminthunder;Password=Fngavs!54;"
+    },
+    "runtime": {
+        "rest": { "enabled": false },
+        "graphql": { "enabled": true, "path": "/graphql" },
+        "host": {
+            "cors": {
+                "origins": ["http://localhost:5173", "*"],
+                "allow-credentials": true
+            }
+        }
+    },
+    "entities": {
+        "secrets": {
+            "source": "secrets",
+            "graphql": {
+                "enabled": true
+            },
+            "permissions": [
+                {
+                    "role": "*",
+                    "actions": ["read", "create", "update", "delete"]
+                },
+                {
+                    "role": "anonymous",
+                    "actions": ["read", "create", "update", "delete"]
+                },
+                {
+                    "role": "authenticated",
+                    "actions": ["read", "create", "update", "delete"]
+                }
+            ]
+        }
+    }
+}
