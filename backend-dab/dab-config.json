@@ -9,7 +9,7 @@
         "graphql": { "enabled": true, "path": "/graphql" },
         "host": {
             "cors": {
-                "origins": ["http://localhost:5173", "https://thundercode.proustibat.dev"],
+                "origins": ["http://localhost:5173", "https://thundercode.proustibat.dev", "*"],
                 "allow-credentials": true
             },
             "authentication": {
