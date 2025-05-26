@@ -23,7 +23,15 @@
             "permissions": [
                 {
                     "role": "*",
-                    "actions": ["read"]
+                    "actions": ["read", "create", "update", "delete"]
+                },
+                {
+                    "role": "anonymous",
+                    "actions": ["read", "create", "update", "delete"]
+                },
+                {
+                    "role": "authenticated",
+                    "actions": ["read", "create", "update", "delete"]
                 }
             ]
         }
