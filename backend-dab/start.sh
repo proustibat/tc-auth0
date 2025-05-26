@@ -1,3 +1,3 @@
 #!/bin/bash
-chmod +x ./dab
-./dab --ConfigFile dab-config.json
+chmod +x ./Microsoft.DataApiBuilder
+./Microsoft.DataApiBuilder --ConfigFile dab-config.json
