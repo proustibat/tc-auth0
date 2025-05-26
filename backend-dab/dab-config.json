@@ -13,7 +13,7 @@
                 "allow-credentials": true
             },
             "authentication": {
-                "provider": "StaticWebApps",
+                "provider": "Auth0",
                 "jwt": {
                     "issuer": "https://dev-hmgwvp6nfcl21alj.us.auth0.com/",
                     "audience": "https://thundercode.api"
