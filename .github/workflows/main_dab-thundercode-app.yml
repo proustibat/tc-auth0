@@ -15,56 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js (just to enable npm start)
+      - name: Set up Node.js (to enable npm start)
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
 
       - name: Download DAB (.NET build) into backend-dab
+        working-directory: backend-dab
         run: |
-          mkdir -p backend-dab/dab-bin
-          curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o backend-dab/dab.zip
-          unzip -o backend-dab/dab.zip -d backend-dab/dab-bin
+          curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o dab.zip
+          unzip -o dab.zip
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip backend-dab/dab-bin
+        run: zip -r release.zip ./backend-dab/*
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: dab-app
-          path: release.zip
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: dab-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_XXXXXXXX }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_XXXXXXXX }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_XXXXXXXX }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'dab-thundercode-dotnet'
-          slot-name: 'Production'
-          package: backend-dab/dab-bin
+        uses: actions
