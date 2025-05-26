@@ -25,8 +25,9 @@ jobs:
         run: |
           curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o dab.zip
           unzip -o dab.zip
-          mv dab_net8.0_linux-x64-1.4.35 dab
+          mv Microsoft.DataApiBuilder dab
           chmod +x dab
+
 
       - name: Ensure start.sh is executable
         working-directory: backend-dab
