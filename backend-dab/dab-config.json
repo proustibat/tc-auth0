@@ -18,6 +18,9 @@
                     "issuer": "https://dev-hmgwvp6nfcl21alj.us.auth0.com/",
                     "audience": "https://thundercode.api"
                 }
+            },
+            "options": {
+                "request-roles": "jwt"
             }
         }
     },
