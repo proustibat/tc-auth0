@@ -1,3 +1,3 @@
 #!/bin/bash
 chmod +x ./Microsoft.DataApiBuilder
-./Microsoft.DataApiBuilder --ConfigFile dab-config.json
+./Microsoft.DataApiBuilder start --config dab-config.json --host.mode Development
