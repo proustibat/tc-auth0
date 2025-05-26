@@ -15,26 +15,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js (to enable npm start)
+      - name: Set up Node.js (to enable npm if needed)
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
 
-      - name: Download DAB (.NET build) into backend-dab
+      - name: Download and extract DAB (self-contained binary)
         working-directory: backend-dab
         run: |
           curl -L https://github.com/Azure/data-api-builder/releases/download/v1.4.35/dab_net8.0_linux-x64-1.4.35.zip -o dab.zip
           unzip -o dab.zip
-          mv Microsoft.DataApiBuilder dab
-          chmod +x dab
 
-
-      - name: Ensure start.sh is executable
-        working-directory: backend-dab
-        run: chmod +x start.sh
+      - name: Make start.sh executable
+        run: chmod +x backend-dab/start.sh
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./backend-dab/*
+        run: zip -r release.zip backend-dab
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -71,4 +67,4 @@ jobs:
         with:
           app-name: 'dab-thundercode-dotnet'
           slot-name: 'Production'
-          package: .
+          package: backend-dab
