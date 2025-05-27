@@ -2,7 +2,7 @@
 
 # Configuration
 CONFIG_FILE="dab-config.json"
-IMAGE="mcr.microsoft.com/azure-databases/data-api-builder"
+IMAGE="mcr.microsoft.com/azure-databases/data-api-builder:latest"
 PORT=5000
 
 # Vérification du fichier de config
