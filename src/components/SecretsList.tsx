@@ -11,18 +11,13 @@ interface SecretListProps {
 
 const SecretsList = ({ secrets }: SecretListProps) => {
     return (
-        <section>
-            <h2>Secrets</h2>
-            <ul>
-                {secrets.map((secret) => (
-                    <li key={secret.id}>
-                        <p>
-                            <strong>{secret.name}</strong> ({secret.description})
-                        </p>
-                    </li>
-                ))}
-            </ul>
-        </section>
+        <ul className="list-disc list-inside mt-3 sm:mt-5">
+            {secrets.map((secret) => (
+                <li key={secret.id}>
+                    <span className="font-bold">{secret.name}</span> ({secret.description})
+                </li>
+            ))}
+        </ul>
     );
 };
 

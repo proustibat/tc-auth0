@@ -15,7 +15,12 @@ export const LogInOutButton = () => {
               } as RedirectLoginWithOrg);
     };
     return (
-        <button type="button" onClick={handleClick} disabled={isLoading}>
+        <button
+            type="button"
+            onClick={handleClick}
+            disabled={isLoading}
+            className="text-slate-100 rounded-md px-3 py-2 text-sm font-medium outline cursor-pointer hover:bg-slate-100 hover:text-slate-900"
+        >
             {isAuthenticated ? "Logout" : "Login"}
         </button>
     );

@@ -2,6 +2,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@ap
 import { setContext } from "@apollo/client/link/context";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
+import Loading from "../components/Loading.tsx";
 
 const httpLink = createHttpLink({
     // uri: "https://dab-thundercode-app.azurewebsites.net/graphql",
@@ -34,7 +35,7 @@ export const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
         setup();
     }, [getAccessTokenSilently]);
 
-    if (isLoading || !client) return <div>Chargement Apollo...</div>;
+    if (isLoading || !client) return <Loading message="Loading Apollo" />;
 
     return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

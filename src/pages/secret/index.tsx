@@ -1,6 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "@tanstack/react-router";
+import Box from "../../components/Box.tsx";
+import ErrorBanner from "../../components/ErrorBanner.tsx";
+import PageTitle from "../../components/PageTitle.tsx";
 import SecretsList from "../../components/SecretsList.tsx";
 import { GET_SECRETS } from "../../graphql/queries/secrets.ts";
 import { useAuthClaims } from "../../hooks/auth/useAuthClaims.ts";
@@ -11,50 +13,76 @@ const AUTHORIZED_ORG_ID = "org_L8aaj0QmOnS3r7G6";
 
 const SecretPage = () => {
     const params = useParams({ from: "/confidential/$secretId" });
-    const { isAuthenticated, isLoading } = useAuth0();
 
     // redirect to login page if the user is not authenticated and auth is not loading
     useProtectedRoute();
 
     const { claims, error: errorAuth } = useAuthClaims();
 
-    const { isAuthorized } = useOrgGuard(AUTHORIZED_ORG_ID);
+    const { isAuthorized, isLoading } = useOrgGuard(AUTHORIZED_ORG_ID);
 
     const {
         data,
-        loading,
+        loading: loadingQuery,
         error: errorQuery,
     } = useQuery(GET_SECRETS, {
         variables: { orgId: claims?.org_id },
-        skip: !claims?.org_id, // pour éviter de lancer la requête si l’ID n’est pas encore dispo
+        skip: !claims?.org_id, // don't run the request if id not available yet
     });
 
-    // don't display the page until we know if the user is authenticated or not
-    if (isLoading || !isAuthenticated) {
-        return <div>Loading authentication information...</div>;
-    }
-
-    if (loading) return <p>Loading secrets...</p>;
-    if (errorQuery) return <p>Erreur GraphQL: {errorQuery.message}</p>;
-
     return (
-        <div>
-            <h1>Secret Page</h1>
-            <p>Secret id {params.secretId}</p>
-            <section>
-                <h2>Claims</h2>
+        <div className="p-5">
+            <PageTitle
+                title="Secret page"
+                subtitle="This is a protected page that displays secrets for a specific organisation."
+            >
+                <p className="text-xs mt-2 dark:text-slate-400 text-slate-600">
+                    Here is the url param: {params.secretId} (it can be used to query the database)
+                </p>
+            </PageTitle>
+
+            <Box>
+                {!isAuthorized && !isLoading && !loadingQuery && (
+                    <ErrorBanner
+                        title="Non authorized"
+                        message="You should belong to the right organization to see secrets projects from the database"
+                    />
+                )}
+
+                <h2 className="uppercase text-lg sm:text-3xl">Here are the saved secrets for your organization:</h2>
+
+                {errorQuery && (
+                    <div className="mt-3">
+                        <ErrorBanner
+                            title={"Something went wrong when requesting secrets from database"}
+                            message={errorQuery.message}
+                        />
+                    </div>
+                )}
+
+                {isAuthorized && loadingQuery && <p>Loading secrets from database...</p>}
+                {isAuthorized && data?.secrets.items && <SecretsList secrets={data.secrets.items} />}
+            </Box>
+
+            <Box>
                 {errorAuth ? (
-                    <p>Error when extracting claims : {errorAuth.message}</p>
+                    <ErrorBanner
+                        title="Error"
+                        message={`❌ Something went wrong when extracting your claims: ${errorAuth.message}`}
+                    />
                 ) : (
                     <>
-                        <h3>Claims extracts :</h3>
-                        <pre>{JSON.stringify(claims, null, 2)}</pre>
+                        <h2 className="uppercase text-lg sm:text-3xl">Here are your claims:</h2>
+                        <p className="text-xs sm:text-sm mb-5">
+                            (including org id if you are logged as a member of an organization)
+                        </p>
+
+                        <pre className="whitespace-pre-wrap overflow-auto text-xs sm:text-sm">
+                            {JSON.stringify(claims, null, 2)}
+                        </pre>
                     </>
                 )}
-                {!isAuthorized && <p>❌ Non authorized organisation</p>}
-            </section>
-
-            {data?.secrets.items && <SecretsList secrets={data.secrets.items} />}
+            </Box>
         </div>
     );
 };

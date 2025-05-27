@@ -1,11 +1,10 @@
+import PageTitle from "../../components/PageTitle.tsx";
+
 const HelloPage = () => {
     return (
-        <>
-            <h1>Hello Page</h1>
-            <section>
-                <p>This is a public page without any privated content</p>
-            </section>
-        </>
+        <div className="p-5">
+            <PageTitle title="Hello page" subtitle="This is a public page without any restricted content" />
+        </div>
     );
 };
 
