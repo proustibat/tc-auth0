@@ -8,11 +8,12 @@ import { useProtectedRoute } from "../../hooks/useProtectedRoute.ts";
 const AUTHORIZED_ORG_ID = "org_L8aaj0QmOnS3r7G6";
 
 const GET_SECRETS = gql`
-  query GetSecrets {
-    secrets {
+  query GetSecrets($orgId: String!) {
+    secrets(filter: { organization_id: { eq: $orgId } }) {
       items {
         id
         name
+        organization_id
       }
     }
   }
@@ -29,7 +30,14 @@ const SecretPage = () => {
 
     const { isAuthorized } = useOrgGuard(AUTHORIZED_ORG_ID);
 
-    const { data, loading, error: errorQuery } = useQuery(GET_SECRETS);
+    const {
+        data,
+        loading,
+        error: errorQuery,
+    } = useQuery(GET_SECRETS, {
+        variables: { orgId: claims?.org_id },
+        skip: !claims?.org_id, // pour éviter de lancer la requête si l’ID n’est pas encore dispo
+    });
 
     // don't display the page until we know if the user is authenticated or not
     if (isLoading || !isAuthenticated) {
