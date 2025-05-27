@@ -8,7 +8,6 @@ const Menu = () => {
             <ul>
                 <li>
                     <Link
-                        // disabled
                         activeProps={{
                             style: { color: "gray" },
                         }}

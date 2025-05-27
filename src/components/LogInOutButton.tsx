@@ -3,7 +3,6 @@ import type { RedirectLoginWithOrg } from "../types.ts";
 
 export const LogInOutButton = () => {
     const { isAuthenticated, loginWithRedirect, logout, isLoading } = useAuth0();
-    console.log("Login triggered with organization");
 
     const handleClick = () => {
         isAuthenticated

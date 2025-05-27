@@ -1,23 +1,13 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "@tanstack/react-router";
-import { useAuthClaims } from "../../hooks/useAuthClaims.ts";
-import { useOrgGuard } from "../../hooks/useOrgGuard.tsx";
-import { useProtectedRoute } from "../../hooks/useProtectedRoute.ts";
+import SecretsList from "../../components/SecretsList.tsx";
+import { GET_SECRETS } from "../../graphql/queries/secrets.ts";
+import { useAuthClaims } from "../../hooks/auth/useAuthClaims.ts";
+import { useOrgGuard } from "../../hooks/auth/useOrgGuard.tsx";
+import { useProtectedRoute } from "../../hooks/auth/useProtectedRoute.ts";
 
 const AUTHORIZED_ORG_ID = "org_L8aaj0QmOnS3r7G6";
-
-const GET_SECRETS = gql`
-  query GetSecrets($orgId: String!) {
-    secrets(filter: { organization_id: { eq: $orgId } }) {
-      items {
-        id
-        name
-        organization_id
-      }
-    }
-  }
-`;
 
 const SecretPage = () => {
     const params = useParams({ from: "/confidential/$secretId" });
@@ -64,16 +54,7 @@ const SecretPage = () => {
                 {!isAuthorized && <p>❌ Non authorized organisation</p>}
             </section>
 
-            <section>
-                <h2>Secrets</h2>
-                <ul>
-                    {data?.secrets.items.map((secret: any) => (
-                        <li key={secret.id}>
-                            <strong>{secret.name}</strong>
-                        </li>
-                    ))}
-                </ul>
-            </section>
+            {data?.secrets.items && <SecretsList secrets={data.secrets.items} />}
         </div>
     );
 };

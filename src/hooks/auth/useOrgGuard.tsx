@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthClaims } from "./useAuthClaims";
+import { useAuthClaims } from "./useAuthClaims.ts";
 
 export const useOrgGuard = (allowedOrgId: string) => {
     const { claims } = useAuthClaims();
