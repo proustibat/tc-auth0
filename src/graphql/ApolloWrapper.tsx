@@ -1,41 +1,36 @@
-import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
-import Loading from "../components/Loading.tsx";
+import type { PropsWithChildren } from "react";
+import { createErrorLink } from "./apolloErrorLink.ts";
 
-const httpLink = createHttpLink({
-    // uri: "https://dab-thundercode-app.azurewebsites.net/graphql",
-    uri: "https://dab-thundercode-dotnet-h0dkcfgncrgaexh9.canadacentral-01.azurewebsites.net/graphql",
-});
+export const ApolloWrapper = ({ children }: PropsWithChildren) => {
+    const { getAccessTokenSilently, isAuthenticated, loginWithRedirect } = useAuth0();
 
-export const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
-    const { getAccessTokenSilently, isLoading } = useAuth0();
-    const [client, setClient] = useState<ApolloClient<unknown> | null>(null);
+    const httpLink = createHttpLink({
+        uri: "https://dab-thundercode-dotnet-h0dkcfgncrgaexh9.canadacentral-01.azurewebsites.net/graphql",
+    });
 
-    useEffect(() => {
-        const setup = async () => {
-            const authLink = setContext(async (_, { headers }) => {
-                const token = await getAccessTokenSilently();
-                return {
-                    headers: {
-                        ...headers,
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
-            });
+    const authLink = setContext(async (_, { headers }) => {
+        const token = isAuthenticated ? await getAccessTokenSilently().catch(() => null) : null;
 
-            const client = new ApolloClient({
-                link: authLink.concat(httpLink),
-                cache: new InMemoryCache(),
-            });
-
-            setClient(client);
+        return {
+            headers: {
+                ...headers,
+                Authorization: token ? `Bearer ${token}` : "",
+            },
         };
-        setup();
-    }, [getAccessTokenSilently]);
+    });
 
-    if (isLoading || !client) return <Loading message="Loading Apollo" />;
+    const client = new ApolloClient({
+        link: from([
+            // biome-ignore lint/suspicious/noExplicitAny: dirty but simpler for an interview test
+            createErrorLink({ loginWithRedirect } as any),
+            authLink,
+            httpLink,
+        ]),
+        cache: new InMemoryCache(),
+    });
 
     return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

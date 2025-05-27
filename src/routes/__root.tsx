@@ -1,6 +1,8 @@
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { lazy } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { AuthProviderWithNavigate } from "../auth/AuthProvider.tsx";
+import ErrorFallback from "../components/ErrorFallback.tsx";
 import Menu from "../components/Menu.tsx";
 import { ApolloWrapper } from "../graphql/ApolloWrapper.tsx";
 
@@ -14,12 +16,19 @@ const TanStackRouterDevtools = import.meta.env.PROD
 
 export const Route = createRootRoute({
     component: () => (
-        <AuthProviderWithNavigate>
-            <ApolloWrapper>
-                <Menu />
-                <Outlet />
-                <TanStackRouterDevtools />
-            </ApolloWrapper>
-        </AuthProviderWithNavigate>
+        <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onReset={() => {
+                window.location.reload();
+            }}
+        >
+            <AuthProviderWithNavigate>
+                <ApolloWrapper>
+                    <Menu />
+                    <Outlet />
+                    <TanStackRouterDevtools />
+                </ApolloWrapper>
+            </AuthProviderWithNavigate>
+        </ErrorBoundary>
     ),
 });
