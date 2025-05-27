@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "@tanstack/react-router";
 import Box from "../../components/Box.tsx";
 import ErrorBanner from "../../components/ErrorBanner.tsx";
@@ -13,8 +14,10 @@ const AUTHORIZED_ORG_ID = "org_L8aaj0QmOnS3r7G6";
 
 const SecretPage = () => {
     const params = useParams({ from: "/confidential/$secretId" });
+    const { isAuthenticated } = useAuth0();
 
     // redirect to login page if the user is not authenticated and auth is not loading
+    // could be done in the context of tansatck router to redirect in beforeLoad if we have more routes
     useProtectedRoute();
 
     const { claims, error: errorAuth } = useAuthClaims();
@@ -29,6 +32,10 @@ const SecretPage = () => {
         variables: { orgId: claims?.org_id },
         skip: !claims?.org_id, // don't run the request if id not available yet
     });
+
+    if (!isAuthenticated) {
+        return null;
+    }
 
     return (
         <div className="p-5">
