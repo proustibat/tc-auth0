@@ -19,7 +19,7 @@ export default defineConfig({
             provider: "v8",
             enabled: true,
             include: ["src/**/*"],
-            exclude: ["src/routeTree.gen.ts", "src/test-utils/**/*", "src/__mocks__/**/*"],
+            exclude: ["src/routeTree.gen.ts", "src/__mocks__/**/*"],
             reporter: ["text", "json", "html"],
         },
         typecheck: {
