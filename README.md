@@ -55,6 +55,15 @@ This project is a secure React frontend that integrates with Auth0 for authentic
 
 
 ## 5. Architecture Diagram
+1. Authentication via Auth0
+   - The user logs in via Auth0.
+   - Auth0 returns an access token.
+2. Sending GraphQL requests with Apollo Client
+   - Apollo Client retrieves the access token.
+   - It sends authenticated GraphQL requests to Data API Builder (DAB).
+3. Validation and execution of requests by DAB
+   - DAB verifies the validity of the token sent by Apollo Client.
+   - DAB interacts with the Azure database to execute the request.
 
 ![Architecture Diagram](./architecture-diagram.png)
 
@@ -108,3 +117,20 @@ This project is a secure React frontend that integrates with Auth0 for authentic
 
 The project follows clear separation of concerns, reusable custom hooks, protected routing using TanStack Router, and good security practices for Auth0 and GraphQL. This setup ensures clarity, testability, and extensibility for future use cases.
 
+---
+
+# Summary
+
+| Requirement                                        | Completed | Details                                                                 |
+|----------------------------------------------------| --------- |-------------------------------------------------------------------------|
+| **Auth0 implementation with organization support** | ✅         | Organization-based access implemented with roles and custom claims.     |
+| **Protected routing with TanStack Router**         | ✅         | Auth protection handled via `useProtectedRoute` and conditional rendering. |
+| **Apollo Client with `authLink`**                  | ✅         | Tokens are injected into GraphQL requests correctly.                    |
+| **GraphQL queries filtered by organization**       | ✅         | Data is filtered using `organization_id` in the query.                  |
+| **Error handling with Apollo**                     | ✅         | `ErrorLink` is set up to catch authentication and GraphQL errors.       |
+| **Global error boundaries**                        | ✅         | `react-error-boundary` is properly used in the root layout.             |
+| **Secure communication channels**                  | ✅         | JWTs, query-level data filtering, and no sensitive data leaks.          |
+| **Unit tests**                                     | ✅         | Tests written with Vitest and React Testing Library, covering key logic. |
+| **GitHub usage and CI/CD setup**                   | ✅         | DAB deployment is automated with GitHub Actions, and the repo is structured. |
+| **Technical documentation**                        | ✅         | `README.md` is structured and clearly explains the system.              |
+| **Clear architecture diagram**                     | ✅         | A clean diagram is integrated into the doc with accurate flow direction. |
