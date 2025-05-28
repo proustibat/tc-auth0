@@ -15,10 +15,12 @@ export default defineConfig({
         environment: "jsdom",
         setupFiles: ["./vitest.setup.ts"],
         coverage: {
+            all: true,
             provider: "v8",
             enabled: true,
             include: ["src/**/*"],
             exclude: ["src/routeTree.gen.ts"],
+            reporter: ["text", "json", "html"],
         },
         typecheck: {
             enabled: true,

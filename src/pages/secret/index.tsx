@@ -20,9 +20,9 @@ const SecretPage = () => {
     // could be done in the context of tansatck router to redirect in beforeLoad if we have more routes
     useProtectedRoute();
 
-    const { claims, error: errorAuth } = useAuthClaims();
+    const { claims, error: errorClaims } = useAuthClaims();
 
-    const { isAuthorized, isLoading } = useOrgGuard(AUTHORIZED_ORG_ID);
+    const { isAuthorized, isLoading: isLoadingOrgAuthorization } = useOrgGuard(AUTHORIZED_ORG_ID);
 
     const {
         data,
@@ -49,33 +49,37 @@ const SecretPage = () => {
             </PageTitle>
 
             <Box>
-                {!isAuthorized && !isLoading && !loadingQuery && (
+                {!isAuthorized && !isLoadingOrgAuthorization && (
                     <ErrorBanner
                         title="Non authorized"
                         message="You should belong to the right organization to see secrets projects from the database"
                     />
                 )}
 
-                <h2 className="uppercase text-lg sm:text-3xl">Here are the saved secrets for your organization:</h2>
-
-                {errorQuery && (
-                    <div className="mt-3">
-                        <ErrorBanner
-                            title={"Something went wrong when requesting secrets from database"}
-                            message={errorQuery.message}
-                        />
-                    </div>
+                {isAuthorized && (
+                    <>
+                        <h2 className="uppercase text-lg sm:text-3xl">
+                            Here are the saved secrets for your organization:
+                        </h2>
+                        {loadingQuery && <p>Loading secrets from database...</p>}
+                        {data?.secrets.items && <SecretsList secrets={data.secrets.items} />}
+                        {errorQuery && (
+                            <div className="mt-3">
+                                <ErrorBanner
+                                    title={"Something went wrong when requesting secrets from database"}
+                                    message={errorQuery.message}
+                                />
+                            </div>
+                        )}
+                    </>
                 )}
-
-                {isAuthorized && loadingQuery && <p>Loading secrets from database...</p>}
-                {isAuthorized && data?.secrets.items && <SecretsList secrets={data.secrets.items} />}
             </Box>
 
             <Box>
-                {errorAuth ? (
+                {errorClaims ? (
                     <ErrorBanner
                         title="Error"
-                        message={`❌ Something went wrong when extracting your claims: ${errorAuth.message}`}
+                        message={`❌ Something went wrong when extracting your claims: ${errorClaims.message}`}
                     />
                 ) : (
                     <>
@@ -84,7 +88,7 @@ const SecretPage = () => {
                             (including org id if you are logged as a member of an organization)
                         </p>
 
-                        <pre className="whitespace-pre-wrap overflow-auto text-xs sm:text-sm">
+                        <pre data-testid="claims" className="whitespace-pre-wrap overflow-auto text-xs sm:text-sm">
                             {JSON.stringify(claims, null, 2)}
                         </pre>
                     </>

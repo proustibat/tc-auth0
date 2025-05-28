@@ -4,7 +4,7 @@ import Box from "./Box.tsx";
 export const UserProfile = () => {
     const { user, isAuthenticated, isLoading } = useAuth0();
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <div className="text-center mt-5">Loading...</div>;
     if (!isAuthenticated || !user) return null;
 
     return (
@@ -22,7 +22,9 @@ export const UserProfile = () => {
             </div>
             <p className="mt-4 mb-1 text-sm sm:text-lg">Here is your profile information:</p>
 
-            <pre className="whitespace-pre-wrap overflow-auto text-xs sm:text-sm">{JSON.stringify(user, null, 2)}</pre>
+            <pre data-testid="user-profile" className="whitespace-pre-wrap overflow-auto text-xs sm:text-sm">
+                {JSON.stringify(user, null, 2)}
+            </pre>
         </Box>
     );
 };

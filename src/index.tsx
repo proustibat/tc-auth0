@@ -4,11 +4,6 @@ import App from "./app";
 import "./index.css";
 
 async function renderRoot() {
-    // if (import.meta.env.DEV) {
-    //     const { worker } = await import("../__mocks__/msw/browser");
-    //     await worker.start();
-    // }
-
     const RootComponent = (
         <StrictMode>
             <App />
