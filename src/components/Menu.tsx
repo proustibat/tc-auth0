@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import classNames from "classnames";
 import { LogInOutButton } from "./LogInOutButton.tsx";
 
-const navigation = [
+export const navigation = [
     { name: "Home (public)", to: "/" },
     { name: "Hello (public)", to: "/hello" },
     { name: "Org secrets (protected)", to: "/confidential/$secretId", params: { secretId: "123" } },

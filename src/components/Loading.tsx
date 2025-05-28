@@ -7,6 +7,7 @@ const Loading = ({ message }: LoadingProps) => {
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <div>
                     <svg
+                        role="img"
                         aria-hidden="true"
                         className="w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-500 dark:fill-blue-50"
                         viewBox="0 0 100 101"
@@ -24,7 +25,11 @@ const Loading = ({ message }: LoadingProps) => {
                     </svg>
                 </div>
             </div>
-            {message && <div className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">{message}</div>}
+            {message && (
+                <div data-testid="message" className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    {message}
+                </div>
+            )}
         </>
     );
 };
