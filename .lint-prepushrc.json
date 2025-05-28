@@ -1,5 +1,5 @@
 {
-    "base": "master",
+    "base": "main",
     "verbose": true,
     "tasks": {
         "*": ["biome ci --no-errors-on-unmatched"],
