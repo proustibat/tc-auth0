@@ -1,4 +1,3 @@
-// src/auth/useAuthClaims.ts
 import { useAuth0 } from "@auth0/auth0-react";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";

@@ -1,6 +1,7 @@
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { useAuth0 } from "@auth0/auth0-react";
+import type { Auth0Client } from "@auth0/auth0-spa-js";
 import type { PropsWithChildren } from "react";
 import { createErrorLink } from "./apolloErrorLink.ts";
 
@@ -23,12 +24,7 @@ export const ApolloWrapper = ({ children }: PropsWithChildren) => {
     });
 
     const client = new ApolloClient({
-        link: from([
-            // biome-ignore lint/suspicious/noExplicitAny: dirty but simpler for an interview test
-            createErrorLink({ loginWithRedirect } as any),
-            authLink,
-            httpLink,
-        ]),
+        link: from([createErrorLink({ loginWithRedirect } as Auth0Client), authLink, httpLink]),
         cache: new InMemoryCache(),
     });
 

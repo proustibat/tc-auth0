@@ -1,5 +1,6 @@
 import { onError } from "@apollo/client/link/error";
 import type { Auth0Client } from "@auth0/auth0-spa-js";
+// import type { RedirectLoginWithOrg } from "../types.ts";
 
 export const createErrorLink = (auth0: Auth0Client) =>
     onError(({ graphQLErrors, networkError }) => {
@@ -10,6 +11,13 @@ export const createErrorLink = (auth0: Auth0Client) =>
                     console.warn("User not authenticated, redirecting...");
                     // can use auth0
                     console.log(auth0);
+                    // Could be this since it's comes from ApolloWrapper
+                    // auth0.loginWithRedirect({
+                    //     appState: {
+                    //         returnTo: window.location.pathname,
+                    //     },
+                    //     organization: "thundercode",
+                    // } as RedirectLoginWithOrg);
                 }
             }
         }
