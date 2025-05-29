@@ -1,5 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import type { RedirectLoginWithOrg } from "../types.ts";
 
 export const LogInOutButton = () => {
     const { isAuthenticated, loginWithRedirect, logout, isLoading } = useAuth0();
@@ -11,8 +10,7 @@ export const LogInOutButton = () => {
                   appState: {
                       returnTo: window.location.pathname,
                   },
-                  organization: "thundercode",
-              } as RedirectLoginWithOrg);
+              });
     };
     return (
         <button

@@ -1,6 +1,5 @@
 import { onError } from "@apollo/client/link/error";
 import type { Auth0Client } from "@auth0/auth0-spa-js";
-// import type { RedirectLoginWithOrg } from "../types.ts";
 
 export const createErrorLink = (auth0: Auth0Client) =>
     onError(({ graphQLErrors, networkError }) => {
@@ -16,8 +15,7 @@ export const createErrorLink = (auth0: Auth0Client) =>
                     //     appState: {
                     //         returnTo: window.location.pathname,
                     //     },
-                    //     organization: "thundercode",
-                    // } as RedirectLoginWithOrg);
+                    // });
                 }
             }
         }

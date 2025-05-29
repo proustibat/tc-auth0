@@ -11,6 +11,8 @@ const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
+export const AUTHORIZED_ORG_ID = "org_L8aaj0QmOnS3r7G6";
+
 const TanStackRouterDevtools = import.meta.env.PROD
     ? () => null
     : lazy(() =>
@@ -25,6 +27,9 @@ const RootRouteComponent = () => (
         onReset={() => {
             window.location.reload();
         }}
+        onError={(error) => {
+            console.log("ERROR BOUNDARY CAUGHT AN ERROR", error);
+        }}
     >
         <Auth0Provider
             domain={domain}
@@ -32,6 +37,7 @@ const RootRouteComponent = () => (
             authorizationParams={{
                 redirect_uri: window.location.origin,
                 audience,
+                organization: AUTHORIZED_ORG_ID,
             }}
             onRedirectCallback={(appState: AppState | undefined) => {
                 appRouter.history.push(appState?.returnTo || window.location.pathname);
